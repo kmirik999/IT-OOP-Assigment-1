@@ -1,35 +1,19 @@
-import javax.xml.crypto.Data;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Scanner;
 
 public class Tester {
-    public static ArrayList<Ticket> tickets = new ArrayList<>();
-
-//    public static void main(String[] args) throws IOException {
-//        tickets.add(new Ticket("10.21.21", "FR12", "2A", "Mirik"));
-//
-//        //A
-//        for(int i = 0; i < 10; i++){
-//            tickets.add(new Ticket(null, "FR12", Integer.toString(i) + "A", null));
-//        }
-//        //B
-//        for(int i = 0; i < 5; i++){
-//            tickets.add(new Ticket(null, "FR12", Integer.toString(i) + "B", null));
-//        }
-//
-////        for(Ticket t : tickets){
-////            System.out.println(t.toString());
-////        }
-//
-//        DataInputReader.readDataFlights();
-//
-//    }
 
     public static void main(String[] args) throws IOException {
+        Scanner scanner = new Scanner(System.in);
+        DataInputReader.readFlights();
+        int pressFlight;
 
-        DataInputReader.readDataFlights("Data");
+        System.out.print("Choose a Flight_Number: ");
+        pressFlight = scanner.nextInt();
+
+        DataInputReader.readDataFlights(DataInputReader.nameFlightNumbers.get(pressFlight - 1));
+
+        Ticket.createTickets(DataInputReader.nameFlightNumbers.get(pressFlight - 1));
 
 
 

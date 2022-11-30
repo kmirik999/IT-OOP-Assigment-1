@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,22 +9,34 @@ import java.util.Map;
 public class DataInputReader {
     //Сохраняет ряды и цены
     public static Map<String, Integer> mp = new HashMap();
+    public static ArrayList<String> nameRows = new ArrayList<>();
+    public static ArrayList<String> nameFlightNumbers = new ArrayList<>();
 
     //Считывает рейсы с Flight.txt
     public static void readFlights() throws IOException {
-        BufferedReader bf = new BufferedReader(new FileReader("src\\Flights.txt"));
+        BufferedReader bf = new BufferedReader(new FileReader("Flights.txt"));
 
         String str;
+        int i = 1;
         while((str = bf.readLine()) != null){
-            System.out.println(str);
+            System.out.println(i++ + ". " + str);
+            nameFlightNumbers.add(str);
         }
     }
 
     //Считывает с конкретного рейса .txt
     public static void readDataFlights(String nameFile) throws IOException{
-        BufferedReader bf = new BufferedReader(new FileReader("src//" + nameFile + ".txt"));
+        BufferedReader bf = new BufferedReader(new FileReader(nameFile + ".txt"));
         mp = new HashMap();
         String str;
+
+        if((str = bf.readLine()) != null){
+            String[] tmp = str.split(" +");
+            for(String s : tmp){
+                nameRows.add(s);
+            }
+        }
+
         while((str = bf.readLine()) != null){
             String key = "";
             String val = "";
@@ -47,17 +60,8 @@ public class DataInputReader {
             mp.put(key, Integer.parseInt(val));
         }
 
+        System.out.println();
     }
 
-    //Проверка, смотрит сколько стоит конкертное место, относительно информации, которую считали с документа конкретного рейса
-    public static int price(int sit){
-        for(Map.Entry<String, Integer> t : mp.entrySet())
-        {
-            if(sit <= Integer.parseInt(t.getKey()))
-            {
-                return t.getValue();
-            }
-        }
-        return -1;
-    }
+
 }
