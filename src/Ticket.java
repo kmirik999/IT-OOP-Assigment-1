@@ -2,17 +2,64 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class Ticket {
-    public String data;
-    public String flightNumber;
-    public String placeInPlane;
-    public String username;
-    public double price;
-    public int hashID;
+    private String data;
+    private String flightNumber;
+    private String placeInPlane;
+    private String username;
+    private double price;
+    private int hashID;
 
-    public int countTicket = 0;
-
-    public Ticket(){}
     public static ArrayList<Ticket> tickets = new ArrayList<>();
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
+    public String getFlightNumber() {
+        return flightNumber;
+    }
+
+    public void setFlightNumber(String flightNumber) {
+        this.flightNumber = flightNumber;
+    }
+
+    public String getPlaceInPlane() {
+        return placeInPlane;
+    }
+
+    public void setPlaceInPlane(String placeInPlane) {
+        this.placeInPlane = placeInPlane;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public int getHashID() {
+        return hashID;
+    }
+
+    public void setHashID(int hashID) {
+        this.hashID = hashID;
+    }
+
+    public static int countTicket = 0;
 
     public Ticket(String data, String flightNumber, String placeInPlane, String username, double price){
         this.data = data;
@@ -23,10 +70,11 @@ public class Ticket {
         this.hashID = hashCodeCreate();
     }
 
-    public int hashCodeCreate(){
+    public static int hashCodeCreate(){
         return countTicket++;
     }
 
+    // Создает и добовляет в массив все билеты всех рейсов
     public static void createTickets(String flightNumber){
         int amountPlaces_Row = AdditionalMethods.countAmountPlaces();
         for(String nameR : DataInputReader.nameRows){
@@ -39,9 +87,12 @@ public class Ticket {
 
     //Проверка, смотрит сколько стоит конкертное место, относительно информации, которую считали с документа конкретного рейса
     public static double price(int sit){
-        for(Map.Entry<String, Integer> t : DataInputReader.mp.entrySet())
+        for(Map.Entry<String, Integer> t : DataInputReader.row_price.entrySet())
         {
-            if(sit <= Integer.parseInt(t.getKey()))
+            //  Сплитим, чтобы выделить отдельно числа и взять большое из них
+            String[] splitRangeRows = t.getKey().split("-");
+
+            if(Integer.parseInt(splitRangeRows[0]) <= sit && sit <= Integer.parseInt(splitRangeRows[1]))
             {
                 return t.getValue();
             }

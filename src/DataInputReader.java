@@ -8,8 +8,8 @@ import java.util.Map;
 // Класс для чтения информации с файлов
 public class DataInputReader {
     //Сохраняет ряды и цены
-    public static Map<String, Integer> mp = new HashMap();
-    public static ArrayList<String> nameRows = new ArrayList<>();
+    public static Map<String, Integer> row_price;
+    public static ArrayList<String> nameRows;
     public static ArrayList<String> nameFlightNumbers = new ArrayList<>();
 
     //Считывает рейсы с Flight.txt
@@ -17,50 +17,49 @@ public class DataInputReader {
         BufferedReader bf = new BufferedReader(new FileReader("Flights.txt"));
 
         String str;
-        int i = 1;
         while((str = bf.readLine()) != null){
-            System.out.println(i++ + ". " + str);
             nameFlightNumbers.add(str);
         }
-    }
 
-    //Считывает с конкретного рейса .txt
-    public static void readDataFlights(String nameFile) throws IOException{
-        BufferedReader bf = new BufferedReader(new FileReader(nameFile + ".txt"));
-        mp = new HashMap();
-        String str;
+        for(String nameFile : nameFlightNumbers){
+            nameRows = new ArrayList<>();
+            row_price = new HashMap();
+            bf = new BufferedReader(new FileReader(nameFile + ".txt"));
 
-        if((str = bf.readLine()) != null){
-            String[] tmp = str.split(" +");
-            for(String s : tmp){
-                nameRows.add(s);
-            }
-        }
-
-        while((str = bf.readLine()) != null){
-            String key = "";
-            String val = "";
-            for(int i = 0; i < str.length(); i++){
-                if(str.charAt(i) == '<'){
-                    while(str.charAt(i + 1) != '>') {
-                        key += str.charAt(i + 1);
-                        i++;
-                    }
-
-                }
-
-                if(str.charAt(i) == '('){
-                    while(str.charAt(i + 1) != ')') {
-                        val += str.charAt(i + 1);
-                        i++;
-                    }
+            // Считываем первый ряд(Имена рядов: А B C...)
+            if((str = bf.readLine()) != null){
+                String[] tmp = str.split(" +");
+                for(String s : tmp){
+                    nameRows.add(s);
                 }
             }
 
-            mp.put(key, Integer.parseInt(val));
-        }
+            // Считываем остальные строки файла(ряд - цена)
+            while((str = bf.readLine()) != null){
+                String key = "";
+                String val = "";
+                for(int i = 0; i < str.length(); i++){
+                    if(str.charAt(i) == '<'){
+                        while(str.charAt(i + 1) != '>') {
+                            key += str.charAt(i + 1);
+                            i++;
+                        }
 
-        System.out.println();
+                    }
+
+                    if(str.charAt(i) == '('){
+                        while(str.charAt(i + 1) != ')') {
+                            val += str.charAt(i + 1);
+                            i++;
+                        }
+                    }
+                }
+
+                row_price.put(key, Integer.parseInt(val));
+            }
+
+            Ticket.createTickets(nameFile);
+        }
     }
 
 
