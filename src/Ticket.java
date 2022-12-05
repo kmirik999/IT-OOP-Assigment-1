@@ -75,11 +75,11 @@ public class Ticket {
     }
 
     // Создает и добовляет в массив все билеты всех рейсов
-    public static void createTickets(String flightNumber){
+    public static void createTickets(String flightNumber, String data){
         int amountPlaces_Row = AdditionalMethods.countAmountPlaces();
         for(String nameR : DataInputReader.nameRows){
             for(int i = 1; i <= amountPlaces_Row; i++){
-                tickets.add(new Ticket("20.01.22", flightNumber, Integer.toString(i) + nameR, null, price(i)));
+                tickets.add(new Ticket(data, flightNumber, Integer.toString(i) + nameR, null, price(i)));
             }
         }
         System.out.println();

@@ -11,12 +11,14 @@ public class Realisation {
         for(Ticket ticket : Ticket.tickets)
         {
             // проверить работу стринга с null
-            if(ticket.getData().equals(data) && ticket.getFlightNumber().equals(flightNumber) && ticket.getPlaceInPlane().equals(placeInPlane) && ticket.getUsername().equals(null))
+            if(ticket.getData().equals(data) && ticket.getFlightNumber().equals(flightNumber) && ticket.getPlaceInPlane().equals(placeInPlane) && ticket.getUsername() == null)
             {
                 ticket.setUsername(username);
                 System.out.println("Confirmed with ID" + ticket.getHashID());
-            } else if(ticket.getData().equals(data) && ticket.getFlightNumber().equals(flightNumber) && ticket.getPlaceInPlane().equals(placeInPlane) && !ticket.getUsername().equals(null)){
+                return;
+            } else if(ticket.getData().equals(data) && ticket.getFlightNumber().equals(flightNumber) && ticket.getPlaceInPlane().equals(placeInPlane) && ticket.getUsername() != null){
                 System.out.println( "The ticket was booked");
+                return;
             }
         }
         System.out.println("Sorry! That ticket doesn`t exist. Book another please.");
@@ -29,8 +31,8 @@ public class Realisation {
         for(Ticket t : Ticket.tickets){
             if(tExist == false && t.getHashID() == hashID) tExist = true;
             if(t.getHashID() == hashID && t.getUsername() != null){
+                System.out.println("Confirmed " + t.getPrice() + " refund for " + t.getUsername());
                 t.setUsername(null);
-                System.out.println("Confirmed " + t.getPrice() + "refund for " + t.getUsername());
                 return;
             }
         }
@@ -47,7 +49,7 @@ public class Realisation {
         for(Ticket t : Ticket.tickets){
             if(tExist == false && t.getHashID() == hashID) tExist = true;
             if(t.getHashID() == hashID && t.getUsername() != null){
-                System.out.println("Flight " + t.getFlightNumber() + ", " + t.getData() + ", seat " + t.getPlaceInPlane() + ", price" + t.getPrice() + ", " + t.getUsername());
+                System.out.println("Flight " + t.getFlightNumber() + ", " + t.getData() + ", seat " + t.getPlaceInPlane() + ", price " + t.getPrice() + ", " + t.getUsername());
                 return;
             }
         }
@@ -62,9 +64,9 @@ public class Realisation {
     public static void view(String username){
         boolean user_booked = false;
         for(Ticket t : Ticket.tickets){
-            if(user_booked == false && t.getUsername().equals(username)) user_booked = true;
-            if(t.getUsername().equals(username)){
-                System.out.println("Flight " + t.getFlightNumber() + ", " + t.getData() + ", seat " + t.getPlaceInPlane() + ", price" + t.getPrice() + ", " + t.getUsername());
+            if(t.getUsername() != null && user_booked == false && t.getUsername().equals(username)) user_booked = true;
+            if(t.getUsername() != null && t.getUsername().equals(username)){
+                System.out.println("Flight " + t.getFlightNumber() + ", " + t.getData() + ", seat " + t.getPlaceInPlane() + ", price " + t.getPrice() + ", " + t.getUsername());
             }
         }
 

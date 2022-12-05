@@ -10,57 +10,104 @@ public class DataInputReader {
     //Сохраняет ряды и цены
     public static Map<String, Integer> row_price;
     public static ArrayList<String> nameRows;
-    public static ArrayList<String> nameFlightNumbers = new ArrayList<>();
+    public static ArrayList<Flight> nameFlightNumbers = new ArrayList<>();
 
-    //Считывает рейсы с Flight.txt
-    public static void readFlights() throws IOException {
-        BufferedReader bf = new BufferedReader(new FileReader("Flights.txt"));
-
+    public static void readOneFile() throws IOException {
+        BufferedReader bf = new BufferedReader(new FileReader("src//Flight2.txt"));
+        boolean start = false;
+        boolean end = false;
         String str;
-        while((str = bf.readLine()) != null){
-            nameFlightNumbers.add(str);
-        }
+        String name = "";
+        String row = "";
+        String data = "";
+        int t = 0;
 
-        for(String nameFile : nameFlightNumbers){
-            nameRows = new ArrayList<>();
-            row_price = new HashMap();
-            bf = new BufferedReader(new FileReader(nameFile + ".txt"));
+        while ((str = bf.readLine()) != null) {
 
-            // Считываем первый ряд(Имена рядов: А B C...)
-            if((str = bf.readLine()) != null){
-                String[] tmp = str.split(" +");
-                for(String s : tmp){
-                    nameRows.add(s);
+
+            if (str.charAt(0) == '|' && start == false) {
+                start = true;
+                end = false;
+                name = "";
+                row = "";
+                data = "";
+                nameRows = new ArrayList<>();
+                row_price = new HashMap<>();
+                continue;
+            } else if (str.charAt(0) == '|' && start == true) {
+                start = false;
+                end = true;
+
+                for (; t < nameFlightNumbers.size(); t++) {
+                    String[] tmp = nameFlightNumbers.get(t).getNameRow().split(" +");
+
+
+                    for (String s : tmp) {
+                        nameRows.add(s);
+                    }
+                    Ticket.createTickets(nameFlightNumbers.get(t).getNameFlight(), nameFlightNumbers.get(t).getData());
                 }
-            }
 
-            // Считываем остальные строки файла(ряд - цена)
-            while((str = bf.readLine()) != null){
-                String key = "";
-                String val = "";
-                for(int i = 0; i < str.length(); i++){
-                    if(str.charAt(i) == '<'){
-                        while(str.charAt(i + 1) != '>') {
+                continue;
+            }
+            for (int i = 0; i < str.length(); i++) {
+                if (str.charAt(i) == '[') {
+                    while (str.charAt(i + 1) != ']') {
+                        name += str.charAt(i + 1);
+                        i++;
+                    }
+                    break;
+                }
+
+                if (str.charAt(i) == '\'') {
+                    while (str.charAt(i + 1) != '\'') {
+                        row += str.charAt(i + 1);
+                        i++;
+                    }
+
+                    break;
+                }
+
+                if (str.charAt(i) == '"') {
+                    while (str.charAt(i + 1) != '"') {
+                        data += str.charAt(i + 1);
+                        i++;
+                    }
+
+                    nameFlightNumbers.add(new Flight(name, row, data));
+                    System.out.println("!!!!!!!!!!!");
+                    break;
+                }
+
+
+                if (str.charAt(i) == '<') {
+                    String key = "";
+                    String val = "";
+                    // Считываем остальные строки файла(ряд - цена)
+                    if (str.charAt(i) == '<') {
+                        while (str.charAt(i + 1) != '>') {
                             key += str.charAt(i + 1);
                             i++;
                         }
-
                     }
-
-                    if(str.charAt(i) == '('){
-                        while(str.charAt(i + 1) != ')') {
+                    i += 2;
+                    if (str.charAt(i) == '(') {
+                        while (str.charAt(i + 1) != ')') {
                             val += str.charAt(i + 1);
                             i++;
                         }
+
+                        row_price.put(key, Integer.parseInt(val));
                     }
+                    break;
                 }
 
-                row_price.put(key, Integer.parseInt(val));
+
             }
 
-            Ticket.createTickets(nameFile);
-        }
-    }
 
+        }
+
+    }
 
 }
