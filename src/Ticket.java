@@ -82,7 +82,6 @@ public class Ticket {
                 tickets.add(new Ticket(data, flightNumber, Integer.toString(i) + nameR, null, price(i)));
             }
         }
-        System.out.println();
     }
 
     //Проверка, смотрит сколько стоит конкертное место, относительно информации, которую считали с документа конкретного рейса

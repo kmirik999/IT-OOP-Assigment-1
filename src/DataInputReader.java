@@ -75,7 +75,6 @@ public class DataInputReader {
                     }
 
                     nameFlightNumbers.add(new Flight(name, row, data));
-                    System.out.println("!!!!!!!!!!!");
                     break;
                 }
 

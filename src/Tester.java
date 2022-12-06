@@ -1,33 +1,70 @@
 import java.io.IOException;
-import java.time.temporal.Temporal;
+import java.util.Scanner;
 
 public class Tester {
 
     public static void main(String[] args) throws IOException {
+        Scanner scanner = new Scanner(System.in);
+        String selection;
+        String data;
+        String flightNumber;
+        String place;
+        String user;
+        int hashID;
         DataInputReader.readOneFile();
+        System.out.println("COMMANDS:\n" +
+                "\"book\" to buy a ticket for the flight\n" +
+                "\"check\" to check available places for the flight\n" +
+                "\"return\" to return ticket wuth refund\n" +
+                "\"view_hashID\" to view the booking confirmation info\n" +
+                "\"view_username\" to view all booked tickets for a particular user");
 
-//        for(Ticket t : Ticket.tickets){
-//            System.out.println(t.toString());
-//        }
-        System.out.println("1");
-        Realisation.book("10.09.23", "HJ114", "2B", "Alex_Akhmadov");
-        System.out.println("2");
-        Realisation.book("03.05.23", "FQ12", "12C", "Alex_Akhmadov");
-        System.out.println("===========================");
+        while (true) {
+            System.out.print("Select: ");
+            selection = scanner.nextLine();
+            switch (selection) {
+                case "book":
+                    System.out.print("Select the data: ");
+                    data = scanner.nextLine();
 
-//        for(Ticket t : Ticket.tickets){
-//            System.out.println(t.toString());
-//        }
+                    System.out.print("Select the flight_number: ");
+                    flightNumber = scanner.nextLine();
 
-        Realisation.view("Alex_Akhmadov");
+                    System.out.print("Select the place for sitting: ");
+                    place = scanner.nextLine();
 
-//        Realisation.refund(61);
-        System.out.println("===========================");
-        Realisation.view("Alex_Akhmadov");
+                    System.out.print("Select the username: ");
+                    user = scanner.nextLine();
+                    Realisation.book(data, flightNumber, place, user);
+                    break;
 
-        System.out.println("===========================\n");
-        Realisation.check("10.09.23", "HJ114");
-//        Realisation.view(188);
+                case "check":
+                    System.out.print("Select the data: ");
+                    data = scanner.nextLine();
 
+                    System.out.print("Select the flight_number: ");
+                    flightNumber = scanner.nextLine();
+                    Realisation.check(data, flightNumber);
+                    break;
+
+                case "return":
+                    System.out.print("Select the hashID of your ticket: ");
+                    hashID = scanner.nextInt();
+                    Realisation.returnTicket(hashID);
+                    break;
+
+                case "view_username":
+                    System.out.print("Select the username to check all user`s tickets: ");
+                    user = scanner.nextLine();
+                    Realisation.view(user);
+                    break;
+
+                case "view_hashID":
+                    System.out.print("Select the hashID of your ticket to check the information: ");
+                    hashID = scanner.nextInt();
+                    Realisation.view(hashID);
+                    break;
+            }
+        }
     }
 }

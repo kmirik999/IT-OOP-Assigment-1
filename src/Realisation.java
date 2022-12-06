@@ -25,8 +25,7 @@ public class Realisation {
     }
 
     // Возврощает билет обратно в базу, онулируют покупку, возврощает деньги клиенту. username = null
-    // !!!ЕСТЬ ВОЗМОЖНОСТЬ ОПТИМИЗАЦИИ!!
-    public static void refund(int hashID){
+    public static void returnTicket(int hashID){
         boolean tExist = false;
         for(Ticket t : Ticket.tickets){
             if(tExist == false && t.getHashID() == hashID) tExist = true;
